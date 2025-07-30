@@ -12,6 +12,7 @@
       text-align: center;
       padding: 50px;
     }
+
     .card {
       background-color: white;
       border-radius: 20px;
@@ -19,26 +20,52 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
       display: inline-block;
       max-width: 400px;
+      animation: fadeIn 2s ease-in;
     }
+
     h1 {
       color: #ff69b4;
+      animation: fadeIn 2s ease-in;
     }
+
+    p {
+      animation: fadeIn 2s ease-in;
+    }
+
     .emoji {
       font-size: 40px;
+      animation: wiggle 2s infinite;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      75% { transform: rotate(-5deg); }
     }
   </style>
 </head>
-<body> 
+<body>
+
+  <!-- Musik -->
   <audio autoplay loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c124b6b7b7.mp3?filename=happy-day-12368.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
   </audio>
+
+  <!-- Kartu Ucapan -->
   <div class="card">
-    <div class="emoji">🎂🎉💖</div>
+    <div class="emoji">🎂🎉💕</div>
     <h1>Selamat Ulang Tahun, Resty!</h1>
     <p>Hari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨</p>
-    <p>Dari Ammar yang lagi belajar ngoding demi kamu 😄</p>
-    <p>Semoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸</p>
-    <div class="emoji">💌🌈🧁</div>
+    <p>Dari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖</p>
+    <p>Semoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈</p>
+    <div class="emoji">💌🌍🪄</div>
   </div>
+
 </body>
 </html>
