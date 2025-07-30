@@ -1,93 +1,83 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Selamat Ulang Tahun Resty!</title>
-  <style>
-    body {
-      font-family: 'Comic Sans MS', cursive;
-      background: linear-gradient(to right, #fbc2eb, #a6c1ee);
-      color: #333;
-      text-align: center;
-      padding: 50px;
-    }
+<!DOCTYPE html>  
+<html lang="id">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>Selamat Ulang Tahun Resty!</title>  
+  <style>  
+    body {  
+      font-family: 'Comic Sans MS', cursive;  
+      background: linear-gradient(to right, #fbc2eb, #a6c1ee);  
+      color: #333;  
+      text-align: center;  
+      padding: 50px;  
+    }  
 
-    .card {
-      background-color: white;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      display: inline-block;
-      max-width: 400px;
-      animation: fadeIn 2s ease-in;
-    }
+    .card {  
+      background-color: white;  
+      border-radius: 20px;  
+      padding: 30px;  
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);  
+      display: inline-block;  
+      max-width: 400px;  
+      animation: fadeIn 2s ease-in;  
+    }  
 
-    h1 {
-      color: #ff69b4;
-      animation: fadeIn 2s ease-in;
-    }
+    h1 {  
+      color: #ff69b4;  
+      animation: fadeIn 2s ease-in;  
+    }  
 
-    p {
-      animation: fadeIn 2s ease-in;
-    }
+    p {  
+      animation: fadeIn 2s ease-in;  
+    }  
 
-    .emoji {
-      font-size: 40px;
-      animation: wiggle 2s infinite;
-    }
+    .emoji {  
+      font-size: 40px;  
+      animation: wiggle 2s infinite;  
+    }  
 
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn {  
+      0% { opacity: 0; transform: translateY(20px); }  
+      100% { opacity: 1; transform: translateY(0); }  
+    }  
 
-    @keyframes wiggle {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(5deg); }
-      75% { transform: rotate(-5deg); }
-    }
-  </style>
-</head>
-<body>
+    @keyframes wiggle {  
+      0%, 100% { transform: rotate(0deg); }  
+      25% { transform: rotate(5deg); }  
+      75% { transform: rotate(-5deg); }  
+    }  
+  </style>  
+</head>  
+<body>  
 
-  <!-- Musik -->
-  <body>
+  <!-- Audio dan tombol musik -->  
+  <audio id="myAudio" loop>  
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c124b6b7b7.mp3?filename=happy-day-12368.mp3" type="audio/mpeg">  
+    Your browser does not support the audio element.  
+  </audio>  
 
-<!-- Audio dan tombol -->
-<audio id="myAudio" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c124b6b7b7.mp3?filename=happy-day-12368.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+  <button onclick="startMusic()" style="padding: 10px 20px; font-size: 16px; background-color: pink; border: none; border-radius: 10px; cursor: pointer; margin-top: 20px;">  
+    🎵 Sentuh di sini untuk mulai 🎵  
+  </button>  
 
-<button onclick="startMusic()" style="padding: 10px 20px; font-size: 16px; background-color: pink; border: none; border-radius: 10px; cursor: pointer; margin-top: 20px;">
-  🎵 Sentuh di sini untuk mulai 🎵
-</button>
+  <script>  
+    function startMusic() {  
+      const audio = document.getElementById("myAudio");  
+      audio.play();  
+      event.target.style.display = "none";  
+    }  
+  </script>  
 
-<script>
-  function startMusic() {
-    const audio = document.getElementById("myAudio");
-    audio.play();
-    // Sembunyikan tombol setelah dipencet
-    event.target.style.display = "none";
-  }
-</script>
+  <!-- Kartu Ucapan -->  
+  <div class="card">  
+    <div class="emoji">🎂🎉💕</div>  
+    <h1>Selamat Ulang Tahun, Resty!</h1>  
+    <p>Hari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨</p>  
+    <p>Dari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖</p>  
+    <p>Semoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈</p>  
+    <div class="emoji">💌🌍🪄</div>  
+  </div>  
 
-<div class="card">
-  <!-- Ucapan ulang tahun -->
-</div>
-
-</body>
-
-  <!-- Kartu Ucapan -->
-  <div class="card">
-    <div class="emoji">🎂🎉💕</div>
-    <h1>Selamat Ulang Tahun, Resty!</h1>
-    <p>Hari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨</p>
-    <p>Dari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖</p>
-    <p>Semoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈</p>
-    <div class="emoji">💌🌍🪄</div>
-  </div>
-
-</body>
+</body>  
 </html>
