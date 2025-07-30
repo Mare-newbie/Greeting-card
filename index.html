@@ -1,195 +1,193 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Selamat Ulang Tahun Resty!</title>
   <style>
     body {
-      font-family: 'Comic Sans MS', cursive;
+      margin: 0;
+      padding: 0;
       background: linear-gradient(to right, #fbc2eb, #a6c1ee);
-      color: #333;
-      text-align: center;
-      overflow-x: hidden;
-      padding: 50px;
-    }
-
-    .envelope-container {
-      position: relative;
-      width: 200px;
-      height: 150px;
-      margin: 100px auto;
-      perspective: 1000px;
-    }
-
-    .flap {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: #ff69b4;
-      border-radius: 5px;
-      transform-origin: top;
-      transition: transform 1s ease;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      z-index: 2;
-    }
-
-    .flap.opened {
-      transform: rotateX(-120deg);
-    }
-
-    .message-card {
-      display: none;
-      background-color: white;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      max-width: 400px;
-      margin: auto;
-      animation: fadeIn 1.5s ease-in forwards;
-      opacity: 0;
-    }
-
-    .emoji {
-      font-size: 40px;
-    }
-
-    #messageText {
-      white-space: pre-line;
-      text-align: left;
-      margin-top: 20px;
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    #reopenBtn {
-      margin-top: 30px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #ffb6c1;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    canvas.confetti {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
+      font-family: 'Comic Sans MS', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
-      pointer-events: none;
-      z-index: 999;
-    }
+      overflow: hidden;
+    }.envelope-container {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  perspective: 1000px;
+}
+
+.envelope {
+  width: 100%;
+  height: 100%;
+  background: #ff69b4;
+  position: absolute;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heart {
+  width: 40px;
+  height: 40px;
+  background: red;
+  position: relative;
+  transform: rotate(-45deg);
+  margin-bottom: 20px;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.heart::before {
+  top: -20px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: 20px;
+}
+
+.flap-top, .flap-left, .flap-right, .flap-bottom {
+  position: absolute;
+  background: #f06292;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease;
+}
+
+.flap-top {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  transform-origin: top;
+  z-index: 3;
+}
+
+.flap-left {
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  transform-origin: left;
+  z-index: 2;
+}
+
+.flap-right {
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  transform-origin: right;
+  z-index: 2;
+}
+
+.flap-bottom {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  transform-origin: bottom;
+  z-index: 1;
+}
+
+.card {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  animation: fadeIn 1s ease forwards;
+  z-index: 4;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.typed-text {
+  white-space: pre-wrap;
+  overflow: hidden;
+  border-right: 2px solid #000;
+  animation: typing 4s steps(50, end), blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
   </style>
 </head>
 <body>
-
-  <!-- Musik dan efek suara -->
-  <audio id="bgMusic" loop>
-    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes/Happy_Music/Scott_Holmes_-_Happy_Music.mp3" type="audio/mpeg">
-  </audio>
-
-  <audio id="paperSound">
-    <source src="https://www.soundjay.com/mechanical/sounds/page-turn-01a.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Canvas untuk confetti -->
-  <canvas class="confetti" id="confettiCanvas"></canvas>
-
-  <!-- Amplop -->
   <div class="envelope-container" onclick="openEnvelope()">
-    <div class="flap" id="flap"></div>
-  </div>
-
-  <!-- Kartu ucapan -->
-  <div class="message-card" id="messageCard">
-    <div class="emoji">🎂🎉💕</div>
-    <div id="messageText"></div>
-    <div class="emoji">💌🌍🪄</div>
-    <button id="reopenBtn" onclick="resetEnvelope()">🔁 Buka Lagi</button>
-  </div>
-
-  <script>
-    const flap = document.getElementById("flap");
-    const messageCard = document.getElementById("messageCard");
-    const messageText = document.getElementById("messageText");
-    const bgMusic = document.getElementById("bgMusic");
-    const paperSound = document.getElementById("paperSound");
-
-    const fullMessage = `Selamat Ulang Tahun, Resty!\n\nHari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨\n\nDari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖\n\nSemoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈`;
-
+    <div class="envelope">
+      <div class="heart"></div>
+      <div class="flap-top"></div>
+      <div class="flap-left"></div>
+      <div class="flap-right"></div>
+      <div class="flap-bottom"></div>
+      <div class="card" id="card">
+        <div class="typed-text" id="message"></div>
+      </div>
+    </div>
+  </div>  <audio id="myAudio" loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes/Happy_Music/Scott_Holmes_-_Happy_Music.mp3" type="audio/mpeg">
+  </audio>  <script>
+    let opened = false;
     function openEnvelope() {
-      flap.classList.add("opened");
+      if (opened) return;
+      opened = true;
+      document.querySelector('.flap-top').style.transform = 'rotateX(-180deg)';
       setTimeout(() => {
-        paperSound.play();
-        messageCard.style.display = "block";
-        typeMessage(fullMessage);
-        bgMusic.play();
-        launchConfetti();
-      }, 800);
+        document.querySelector('.flap-left').style.transform = 'rotateY(-180deg)';
+        document.querySelector('.flap-right').style.transform = 'rotateY(180deg)';
+      }, 600);
+      setTimeout(() => {
+        document.querySelector('.flap-bottom').style.transform = 'rotateX(180deg)';
+      }, 1200);
+      setTimeout(() => {
+        document.getElementById('card').style.display = 'block';
+        typeMessage();
+        document.getElementById('myAudio').play();
+      }, 1800);
     }
 
-    function typeMessage(text) {
+    function typeMessage() {
+      const text = `Selamat Ulang Tahun, Resty! 🎉\n\nHari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨\n\nDari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖\n\nSemoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈`;
+      const target = document.getElementById('message');
       let i = 0;
-      messageText.textContent = "";
       const interval = setInterval(() => {
-        messageText.textContent += text[i];
+        target.textContent += text[i];
         i++;
         if (i === text.length) clearInterval(interval);
       }, 40);
     }
-
-    function resetEnvelope() {
-      flap.classList.remove("opened");
-      messageCard.style.display = "none";
-      messageText.textContent = "";
-    }
-
-    // Simple confetti using canvas
-    const canvas = document.getElementById("confettiCanvas");
-    const ctx = canvas.getContext("2d");
-    let confetti = [];
-
-    function launchConfetti() {
-      resizeCanvas();
-      for (let i = 0; i < 150; i++) {
-        confetti.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height - canvas.height,
-          r: Math.random() * 6 + 4,
-          d: Math.random() * 5 + 2,
-          color: `hsl(${Math.random() * 360}, 100%, 70%)`
-        });
-      }
-      animateConfetti();
-    }
-
-    function animateConfetti() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < confetti.length; i++) {
-        let p = confetti[i];
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-        p.y += p.d;
-        if (p.y > canvas.height) p.y = 0;
-      }
-      requestAnimationFrame(animateConfetti);
-    }
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener("resize", resizeCanvas);
-  </script>
-
-</body>
+  </script></body>
 </html>
