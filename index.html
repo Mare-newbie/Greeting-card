@@ -51,18 +51,18 @@
 </head>  
 <body>  
 
-  <!-- Audio dan tombol musik -->  
-  <audio id="myAudio" loop>
-  <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes/Happy_Music/Scott_Holmes_-_Happy_Music.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+  <!-- Musik -->  
+  <audio id="myAudio" loop><source src="love-romantic-hopeful-music-33.mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung audio.
+  </audio>
 
-  <button onclick="startMusic()" style="padding: 10px 20px; font-size: 16px; background-color: pink; border: none; border-radius: 10px; cursor: pointer; margin-top: 20px;">  
+  <!-- Tombol Musik -->  
+  <button onclick="startMusic(event)" style="padding: 10px 20px; font-size: 16px; background-color: pink; border: none; border-radius: 10px; cursor: pointer; margin-top: 20px;">  
     🎵 Sentuh di sini untuk mulai 🎵  
   </button>  
 
   <script>  
-    function startMusic() {  
+    function startMusic(event) {  
       const audio = document.getElementById("myAudio");  
       audio.play();  
       event.target.style.display = "none";  
