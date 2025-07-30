@@ -1,81 +1,73 @@
-<!DOCTYPE html>  
-<html lang="id">  
-<head>  
-  <meta charset="UTF-8" />  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
-  <title>Selamat Ulang Tahun Resty!</title>  
-  <style>  
-    body {  
-      font-family: 'Comic Sans MS', cursive;  
-      background: linear-gradient(to right, #fbc2eb, #a6c1ee);  
-      color: #333;  
-      text-align: center;  
-      padding: 50px;  
-    }  
-
-    .envelope-container {
-      transition: transform 1s ease;
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Selamat Ulang Tahun Resty!</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+      color: #333;
+      text-align: center;
+      padding: 50px;
+      perspective: 1000px;
     }
 
-    .envelope {  
-      width: 150px;  
-      height: 100px;  
-      background: #ff69b4;  
-      margin: 100px auto;  
-      position: relative;  
-      cursor: pointer;  
-      border-radius: 5px;  
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);  
-      animation: wiggle 2s infinite;  
-    }  
+    .envelope-wrapper {
+      width: 200px;
+      height: 150px;
+      margin: 100px auto;
+      position: relative;
+      transform-style: preserve-3d;
+    }
 
-    .envelope::before,  
-    .envelope::after {  
-      content: '';  
-      position: absolute;  
-      width: 0;  
-      height: 0;  
-      border-style: solid;  
-    }  
+    .envelope {
+      width: 100%;
+      height: 100%;
+      background: #ff69b4;
+      position: absolute;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
 
-    .envelope::before {  
-      top: 0;  
-      left: 0;  
-      border-width: 0 75px 50px 75px;  
-      border-color: transparent transparent #f06292 transparent;  
-    }  
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-bottom: 75px solid #f06292;
+      transform-origin: top center;
+      transition: transform 0.8s ease;
+      z-index: 2;
+    }
 
-    .envelope::after {  
-      bottom: 0;  
-      left: 0;  
-      border-width: 50px 75px 0 75px;  
-      border-color: #f06292 transparent transparent transparent;  
-    }  
+    .flap.opened {
+      transform: rotateX(-150deg);
+    }
 
-    @keyframes wiggle {  
-      0%, 100% { transform: rotate(0deg); }  
-      25% { transform: rotate(2deg); }  
-      75% { transform: rotate(-2deg); }  
-    }  
+    .card {
+      display: none;
+      background-color: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      max-width: 400px;
+      animation: fadeIn 1.2s ease-in;
+      margin: 0 auto;
+    }
 
-    .card {  
-      display: none;  
-      background-color: white;  
-      border-radius: 20px;  
-      padding: 30px;  
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);  
-      max-width: 400px;  
-      animation: fadeIn 1.5s ease-in;  
-      margin: 0 auto;  
-    }  
+    .emoji {
+      font-size: 40px;
+    }
 
-    h1 {  
-      color: #ff69b4;  
-    }  
-
-    .emoji {  
-      font-size: 40px;  
-    }  
+    h1 {
+      color: #ff69b4;
+    }
 
     .back-btn {
       margin-top: 30px;
@@ -88,59 +80,62 @@
       font-size: 16px;
     }
 
-    @keyframes fadeIn {  
-      0% { opacity: 0; transform: translateY(20px); }  
-      100% { opacity: 1; transform: translateY(0); }  
-    }  
-  </style>  
-</head>  
-<body>  
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
 
-  <!-- Musik -->
+  <!-- Musik dan efek suara -->
   <audio id="myAudio" loop>
     <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes/Happy_Music/Scott_Holmes_-_Happy_Music.mp3" type="audio/mpeg">
   </audio>
-
-  <!-- Efek suara buka kertas -->
   <audio id="paperSound">
     <source src="paper-open.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Amplop -->  
-  <div class="envelope-container" id="envelopeContainer">
-    <div class="envelope" onclick="openCard(event)"></div>
+  <!-- Amplop 3D -->
+  <div class="envelope-wrapper" onclick="openCard()">
+    <div class="envelope"></div>
+    <div class="flap" id="flap"></div>
   </div>
 
-  <!-- Kartu Ucapan -->  
-  <div class="card" id="greetingCard">  
-    <div class="emoji">🎂🎉💕</div>  
-    <h1>Selamat Ulang Tahun, Resty!</h1>  
-    <p>Hari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨</p>  
-    <p>Dari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖</p>  
-    <p>Semoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈</p>  
-    <div class="emoji">💌🌍🪄</div>  
+  <!-- Kartu Ucapan -->
+  <div class="card" id="greetingCard">
+    <div class="emoji">🎂🎉💕</div>
+    <h1>Selamat Ulang Tahun, Resty!</h1>
+    <p>Hari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨</p>
+    <p>Dari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖</p>
+    <p>Semoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈</p>
+    <div class="emoji">💌🌍🪄</div>
     <button class="back-btn" onclick="resetCard()">🔁 Balik ke amplop</button>
-  </div>  
+  </div>
 
-  <script>  
-    function openCard(event) {  
-      document.getElementById('envelopeContainer').style.transform = 'rotateY(90deg)';  
+  <script>
+    function openCard() {
+      const flap = document.getElementById("flap");
+      flap.classList.add("opened");
+
+      // Delay muncul kartu agar sinkron dengan animasi
       setTimeout(() => {
-        document.getElementById('envelopeContainer').style.display = 'none';  
-        document.getElementById('greetingCard').style.display = 'inline-block';  
-      }, 500);  
+        document.querySelector('.envelope-wrapper').style.display = 'none';
+        document.getElementById('greetingCard').style.display = 'inline-block';
+      }, 800);
 
-      // Play musik dan suara buka kertas
-      document.getElementById('myAudio').play();  
-      document.getElementById('paperSound').play();  
+      document.getElementById('myAudio').play();
+      document.getElementById('paperSound').play();
     }
 
     function resetCard() {
-      document.getElementById('greetingCard').style.display = 'none';  
-      document.getElementById('envelopeContainer').style.display = 'block';  
-      document.getElementById('envelopeContainer').style.transform = 'rotateY(0deg)';
-    }  
-  </script>  
+      document.getElementById('greetingCard').style.display = 'none';
+      const flap = document.getElementById("flap");
+      flap.classList.remove("opened");
+      const env = document.querySelector('.envelope-wrapper');
+      env.style.display = 'block';
+    }
+  </script>
 
-</body>  
+</body>
 </html>
