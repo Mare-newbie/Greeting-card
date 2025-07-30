@@ -10,131 +10,185 @@
       background: linear-gradient(to right, #fbc2eb, #a6c1ee);
       color: #333;
       text-align: center;
+      overflow-x: hidden;
       padding: 50px;
-      perspective: 1000px;
     }
 
-    .envelope-wrapper {
+    .envelope-container {
+      position: relative;
       width: 200px;
       height: 150px;
       margin: 100px auto;
-      position: relative;
-      transform-style: preserve-3d;
-    }
-
-    .envelope {
-      width: 100%;
-      height: 100%;
-      background: #ff69b4;
-      position: absolute;
-      border-radius: 8px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      z-index: 1;
+      perspective: 1000px;
     }
 
     .flap {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: 100px solid transparent;
-      border-right: 100px solid transparent;
-      border-bottom: 75px solid #f06292;
-      transform-origin: top center;
-      transition: transform 0.8s ease;
+      width: 100%;
+      height: 100%;
+      background: #ff69b4;
+      border-radius: 5px;
+      transform-origin: top;
+      transition: transform 1s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
       z-index: 2;
     }
 
     .flap.opened {
-      transform: rotateX(-150deg);
+      transform: rotateX(-120deg);
     }
 
-    .card {
+    .message-card {
       display: none;
       background-color: white;
       border-radius: 20px;
       padding: 30px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
       max-width: 400px;
-      animation: fadeIn 1.2s ease-in;
-      margin: 0 auto;
+      margin: auto;
+      animation: fadeIn 1.5s ease-in forwards;
+      opacity: 0;
     }
 
     .emoji {
       font-size: 40px;
     }
 
-    h1 {
-      color: #ff69b4;
-    }
-
-    .back-btn {
-      margin-top: 30px;
-      padding: 10px 20px;
-      background-color: #f06292;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
+    #messageText {
+      white-space: pre-line;
+      text-align: left;
+      margin-top: 20px;
     }
 
     @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+      to {
+        opacity: 1;
+      }
+    }
+
+    #reopenBtn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ffb6c1;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    canvas.confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
     }
   </style>
 </head>
 <body>
 
   <!-- Musik dan efek suara -->
-  <audio id="myAudio" loop>
+  <audio id="bgMusic" loop>
     <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes/Happy_Music/Scott_Holmes_-_Happy_Music.mp3" type="audio/mpeg">
   </audio>
+
   <audio id="paperSound">
-    <source src="paper-open.mp3" type="audio/mpeg">
+    <source src="https://www.soundjay.com/mechanical/sounds/page-turn-01a.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Amplop 3D -->
-  <div class="envelope-wrapper" onclick="openCard()">
-    <div class="envelope"></div>
+  <!-- Canvas untuk confetti -->
+  <canvas class="confetti" id="confettiCanvas"></canvas>
+
+  <!-- Amplop -->
+  <div class="envelope-container" onclick="openEnvelope()">
     <div class="flap" id="flap"></div>
   </div>
 
-  <!-- Kartu Ucapan -->
-  <div class="card" id="greetingCard">
+  <!-- Kartu ucapan -->
+  <div class="message-card" id="messageCard">
     <div class="emoji">🎂🎉💕</div>
-    <h1>Selamat Ulang Tahun, Resty!</h1>
-    <p>Hari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨</p>
-    <p>Dari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖</p>
-    <p>Semoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈</p>
+    <div id="messageText"></div>
     <div class="emoji">💌🌍🪄</div>
-    <button class="back-btn" onclick="resetCard()">🔁 Balik ke amplop</button>
+    <button id="reopenBtn" onclick="resetEnvelope()">🔁 Buka Lagi</button>
   </div>
 
   <script>
-    function openCard() {
-      const flap = document.getElementById("flap");
+    const flap = document.getElementById("flap");
+    const messageCard = document.getElementById("messageCard");
+    const messageText = document.getElementById("messageText");
+    const bgMusic = document.getElementById("bgMusic");
+    const paperSound = document.getElementById("paperSound");
+
+    const fullMessage = `Selamat Ulang Tahun, Resty!\n\nHari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨\n\nDari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖\n\nSemoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈`;
+
+    function openEnvelope() {
       flap.classList.add("opened");
-
-      // Delay muncul kartu agar sinkron dengan animasi
       setTimeout(() => {
-        document.querySelector('.envelope-wrapper').style.display = 'none';
-        document.getElementById('greetingCard').style.display = 'inline-block';
+        paperSound.play();
+        messageCard.style.display = "block";
+        typeMessage(fullMessage);
+        bgMusic.play();
+        launchConfetti();
       }, 800);
-
-      document.getElementById('myAudio').play();
-      document.getElementById('paperSound').play();
     }
 
-    function resetCard() {
-      document.getElementById('greetingCard').style.display = 'none';
-      const flap = document.getElementById("flap");
+    function typeMessage(text) {
+      let i = 0;
+      messageText.textContent = "";
+      const interval = setInterval(() => {
+        messageText.textContent += text[i];
+        i++;
+        if (i === text.length) clearInterval(interval);
+      }, 40);
+    }
+
+    function resetEnvelope() {
       flap.classList.remove("opened");
-      const env = document.querySelector('.envelope-wrapper');
-      env.style.display = 'block';
+      messageCard.style.display = "none";
+      messageText.textContent = "";
     }
+
+    // Simple confetti using canvas
+    const canvas = document.getElementById("confettiCanvas");
+    const ctx = canvas.getContext("2d");
+    let confetti = [];
+
+    function launchConfetti() {
+      resizeCanvas();
+      for (let i = 0; i < 150; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * 5 + 2,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`
+        });
+      }
+      animateConfetti();
+    }
+
+    function animateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < confetti.length; i++) {
+        let p = confetti[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        p.y += p.d;
+        if (p.y > canvas.height) p.y = 0;
+      }
+      requestAnimationFrame(animateConfetti);
+    }
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resizeCanvas);
   </script>
 
 </body>
