@@ -13,71 +13,134 @@
       padding: 50px;  
     }  
 
+    .envelope-container {
+      transition: transform 1s ease;
+    }
+
+    .envelope {  
+      width: 150px;  
+      height: 100px;  
+      background: #ff69b4;  
+      margin: 100px auto;  
+      position: relative;  
+      cursor: pointer;  
+      border-radius: 5px;  
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);  
+      animation: wiggle 2s infinite;  
+    }  
+
+    .envelope::before,  
+    .envelope::after {  
+      content: '';  
+      position: absolute;  
+      width: 0;  
+      height: 0;  
+      border-style: solid;  
+    }  
+
+    .envelope::before {  
+      top: 0;  
+      left: 0;  
+      border-width: 0 75px 50px 75px;  
+      border-color: transparent transparent #f06292 transparent;  
+    }  
+
+    .envelope::after {  
+      bottom: 0;  
+      left: 0;  
+      border-width: 50px 75px 0 75px;  
+      border-color: #f06292 transparent transparent transparent;  
+    }  
+
+    @keyframes wiggle {  
+      0%, 100% { transform: rotate(0deg); }  
+      25% { transform: rotate(2deg); }  
+      75% { transform: rotate(-2deg); }  
+    }  
+
     .card {  
+      display: none;  
       background-color: white;  
       border-radius: 20px;  
       padding: 30px;  
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);  
-      display: inline-block;  
       max-width: 400px;  
-      animation: fadeIn 2s ease-in;  
+      animation: fadeIn 1.5s ease-in;  
+      margin: 0 auto;  
     }  
 
     h1 {  
       color: #ff69b4;  
-      animation: fadeIn 2s ease-in;  
-    }  
-
-    p {  
-      animation: fadeIn 2s ease-in;  
     }  
 
     .emoji {  
       font-size: 40px;  
-      animation: wiggle 2s infinite;  
     }  
+
+    .back-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #f06292;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
     @keyframes fadeIn {  
       0% { opacity: 0; transform: translateY(20px); }  
       100% { opacity: 1; transform: translateY(0); }  
     }  
-
-    @keyframes wiggle {  
-      0%, 100% { transform: rotate(0deg); }  
-      25% { transform: rotate(5deg); }  
-      75% { transform: rotate(-5deg); }  
-    }  
   </style>  
 </head>  
 <body>  
 
-  <!-- Musik -->  
-  <audio id="myAudio" loop><source src="love-romantic-hopeful-music-33.mp3" type="audio/mpeg">
-    Browser kamu tidak mendukung audio.
+  <!-- Musik -->
+  <audio id="myAudio" loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes/Happy_Music/Scott_Holmes_-_Happy_Music.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Tombol Musik -->  
-  <button onclick="startMusic(event)" style="padding: 10px 20px; font-size: 16px; background-color: pink; border: none; border-radius: 10px; cursor: pointer; margin-top: 20px;">  
-    🎵 Sentuh di sini untuk mulai 🎵  
-  </button>  
+  <!-- Efek suara buka kertas -->
+  <audio id="paperSound">
+    <source src="paper-open.mp3" type="audio/mpeg">
+  </audio>
 
-  <script>  
-    function startMusic(event) {  
-      const audio = document.getElementById("myAudio");  
-      audio.play();  
-      event.target.style.display = "none";  
-    }  
-  </script>  
+  <!-- Amplop -->  
+  <div class="envelope-container" id="envelopeContainer">
+    <div class="envelope" onclick="openCard(event)"></div>
+  </div>
 
   <!-- Kartu Ucapan -->  
-  <div class="card">  
+  <div class="card" id="greetingCard">  
     <div class="emoji">🎂🎉💕</div>  
     <h1>Selamat Ulang Tahun, Resty!</h1>  
     <p>Hari ini adalah hari spesial... karena kamu lahir dan bikin dunia jadi lebih indah ✨</p>  
     <p>Dari Ammar yang lagi belajar ngoding demi kamu 🧑‍💻💖</p>  
     <p>Semoga semua impianmu tercapai, dan jangan lupa senyum terus yaa 🌸🌈</p>  
     <div class="emoji">💌🌍🪄</div>  
+    <button class="back-btn" onclick="resetCard()">🔁 Balik ke amplop</button>
   </div>  
+
+  <script>  
+    function openCard(event) {  
+      document.getElementById('envelopeContainer').style.transform = 'rotateY(90deg)';  
+      setTimeout(() => {
+        document.getElementById('envelopeContainer').style.display = 'none';  
+        document.getElementById('greetingCard').style.display = 'inline-block';  
+      }, 500);  
+
+      // Play musik dan suara buka kertas
+      document.getElementById('myAudio').play();  
+      document.getElementById('paperSound').play();  
+    }
+
+    function resetCard() {
+      document.getElementById('greetingCard').style.display = 'none';  
+      document.getElementById('envelopeContainer').style.display = 'block';  
+      document.getElementById('envelopeContainer').style.transform = 'rotateY(0deg)';
+    }  
+  </script>  
 
 </body>  
 </html>
