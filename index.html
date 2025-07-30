@@ -52,12 +52,32 @@
 <body>
 
   <!-- Musik -->
-  <audio id="myAudio" loop>
-  <source src="https://love-romantic-hopeful-music-333017.mp3" type="audio/mpeg">
+  <body>
+
+<!-- Audio dan tombol -->
+<audio id="myAudio" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c124b6b7b7.mp3?filename=happy-day-12368.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
-<button onclick="document.getElementById('myAudio').play()"> 💣</button>
+<button onclick="startMusic()" style="padding: 10px 20px; font-size: 16px; background-color: pink; border: none; border-radius: 10px; cursor: pointer; margin-top: 20px;">
+  🎵 Sentuh di sini untuk mulai 🎵
+</button>
+
+<script>
+  function startMusic() {
+    const audio = document.getElementById("myAudio");
+    audio.play();
+    // Sembunyikan tombol setelah dipencet
+    event.target.style.display = "none";
+  }
+</script>
+
+<div class="card">
+  <!-- Ucapan ulang tahun -->
+</div>
+
+</body>
 
   <!-- Kartu Ucapan -->
   <div class="card">
